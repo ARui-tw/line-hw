@@ -153,9 +153,19 @@ const UserController = {
       },
     };
     try {
+      const returnValue = [];
       validator.validate(req.body, rule);
       const result = await service.user.userFindBirthday(req.body);
-      res.json(result);
+      result.forEach((user) => {
+        const { FirstName, Email } = user;
+        returnValue.push({
+          subject: 'Happy birthday!',
+          text: `Happy birthday, dear ${FirstName}!`,
+          email: Email,
+        });
+      });
+
+      res.json(returnValue);
     } catch (error) {
       logger.error('[User Controller] Failed to birthday:', error);
       res.status(400).json({ message: `Failed to birthday, ${error}` });
