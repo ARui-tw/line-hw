@@ -6,6 +6,16 @@ const idRule = {
   type: 'multi',
   rules: [{ type: 'string' }, { type: 'object' }],
 };
+const getAge = (dateString) => {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1;
+  }
+  return age;
+};
 
 const UserController = {
   async register(req, res) {
@@ -155,7 +165,26 @@ const UserController = {
     try {
       validator.validate(req.body, rule);
       const result = await service.user.userFindBirthday(req.body);
-      res.json(result);
+      const returnValue = [];
+
+      result.forEach((user) => {
+        const { FirstName, Email } = user;
+
+        if (getAge(user.DateOfBirth) > 49) {
+          returnValue.push({
+            subject: 'Happy birthday!',
+            text: `Happy birthday, dear ${FirstName}! [Old man Img](https://i.imgflip.com/1oel1i.jpg)`,
+            email: Email,
+          });
+        } else {
+          returnValue.push({
+            subject: 'Happy birthday!',
+            text: `Happy birthday, ${FirstName}!`,
+            email: Email,
+          });
+        }
+      });
+      res.json(returnValue);
     } catch (error) {
       logger.error('[User Controller] Failed to birthday:', error);
       res.status(400).json({ message: `Failed to birthday, ${error}` });
