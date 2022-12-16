@@ -79,6 +79,50 @@ const testService = {
 
     return result > 0;
   },
+  async userFindBirthday(params) {
+    const { date } = params;
+    const month = date.getMonth() + 1;
+
+    // FIXME: timezone issue
+    const day = date.getDate() - 1;
+
+    const result = await model.Users.aggregate(
+      [
+        {
+          $project: {
+            id: 1,
+            Gender: 1,
+            Email: 1,
+            FirstName: 1,
+            LastName: 1,
+            DateOfBirth: 1,
+            month: { $month: '$DateOfBirth' },
+            day: { $dayOfMonth: '$DateOfBirth' },
+          },
+        },
+        {
+          $match: {
+            $and: [
+              { month },
+              { day },
+            ],
+          },
+        },
+        {
+          $project: {
+            id: 1,
+            Gender: 1,
+            Email: 1,
+            FirstName: 1,
+            LastName: 1,
+            DateOfBirth: 1,
+          },
+        },
+      ],
+    );
+
+    return result;
+  },
 };
 
 export default testService;

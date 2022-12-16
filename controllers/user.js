@@ -87,26 +87,32 @@ const UserController = {
   },
   async modifyUser(req, res) {
     const rule = {
+      _id: idRule,
       FirstName: {
         type: 'string',
         min: 1,
         max: 50,
+        optional: true,
       },
       LastName: {
         type: 'string',
         min: 1,
         max: 50,
+        optional: true,
       },
       DateOfBirth: {
         type: 'date',
         convert: true,
+        optional: true,
       },
       Email: {
         type: 'email',
+        optional: true,
       },
       Gender: {
         type: 'string',
         enum: ['男', '女'],
+        optional: true,
       },
     };
     try {
@@ -137,6 +143,22 @@ const UserController = {
     } catch (error) {
       logger.error('[User Controller] Failed to removeUser:', error);
       res.status(400).json({ message: `Failed to removeUser, ${error}` });
+    }
+  },
+  async birthday(req, res) {
+    const rule = {
+      date: {
+        type: 'date',
+        convert: true,
+      },
+    };
+    try {
+      validator.validate(req.body, rule);
+      const result = await service.user.userFindBirthday(req.body);
+      res.json(result);
+    } catch (error) {
+      logger.error('[User Controller] Failed to birthday:', error);
+      res.status(400).json({ message: `Failed to birthday, ${error}` });
     }
   },
 };

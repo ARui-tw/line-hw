@@ -7,6 +7,7 @@ userRouter.post('/register', Controller.user.register);
 userRouter.post('/modifyUser', Controller.user.modifyUser);
 userRouter.post('/getUser', Controller.user.getUser);
 userRouter.post('/getUsers', Controller.user.getUsers);
+userRouter.post('/birthday', Controller.user.birthday);
 userRouter.post('/removeUser', Controller.user.removeUser);
 
 export default userRouter;
