@@ -110,10 +110,7 @@ const testService = {
         },
         {
           $project: {
-            id: 1,
-            Gender: 1,
             Email: 1,
-            FirstName: 1,
             LastName: 1,
             DateOfBirth: 1,
           },
