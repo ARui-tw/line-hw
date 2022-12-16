@@ -1,7 +1,7 @@
-// import test from './test';
+import sample from './sample';
 import user from './user';
 
 export default {
-  // test,
+  sample,
   user,
 };
