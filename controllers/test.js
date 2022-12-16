@@ -1,5 +1,5 @@
 import logger from '../libs/logger';
-import service from '../service';
+import service from '../services';
 
 const testController = {
   async test(req, res) {
