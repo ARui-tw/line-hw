@@ -18,3 +18,5 @@ app.use(router);
 app.listen(process.env.PORT, () => {
   logger.info(`Server is running at port ${process.env.PORT}`);
 });
+
+export default app;
